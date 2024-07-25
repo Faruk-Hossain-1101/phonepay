@@ -63,11 +63,11 @@ def initiate_payment(request):
             response = requests.post(settings.PHONEPE_INITIATE_PAYMENT_URL+'/pg/v1/pay', headers=headers, json=final_payload)
             data = response.json()
             
+            logger.info(data)
             if data['success']:
                 url = data['data']['instrumentResponse']['redirectInfo']['url']
                 return redirect(url)
             else:
-                logger.info(data)
                 return redirect('payment:checkout')
 
         except Exception as e:
@@ -83,6 +83,7 @@ def payment_callback(request):
 
     try:
         data = request.POST.dict()  # Convert QueryDict to a regular dictionary
+        logger.info(data)
         if data.get('checksum') and data.get('code') == "PAYMENT_SUCCESS":
             response = render(request, 'success.html')
             return response

@@ -79,7 +79,7 @@ def initiate_payment(request):
 def payment_callback(request):
     if request.method != 'POST':
         logger.error("Invalid request method: %s", request.method)
-        return redirect('login')
+        return redirect('payment:checkout')
 
     try:
         data = request.POST.dict()  # Convert QueryDict to a regular dictionary
